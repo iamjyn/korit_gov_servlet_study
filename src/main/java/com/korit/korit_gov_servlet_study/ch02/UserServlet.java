@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -56,8 +55,7 @@ public class UserServlet extends HttpServlet {
         // 찾으면 user객체 응답, 없으면 username은 존재하지 않습니다.(404)
         req.setCharacterEncoding(StandardCharsets.UTF_8.name());
         List<User> foundUsers = users.stream()
-                .filter(user -> user.getUsername().equals(req.getParameter("username")))
-                .toList();
+                .filter(user -> user.getUsername().equals(req.getParameter("username"))).toList();
         User foundUser = foundUsers.isEmpty() ? null : foundUsers.get(0);
 
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
