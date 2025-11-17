@@ -6,6 +6,7 @@ import java.util.List;
 public class BoardRepository {
     private static BoardRepository instance;
     private List<Board> boards;
+    private Long boardId = 1L;
 
     private BoardRepository() {
         boards = new ArrayList<>();
@@ -18,15 +19,10 @@ public class BoardRepository {
         return instance;
     }
 
-    public Board findByTitle(String title) {
-        return boards.stream().filter(t -> t.equals(title))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public Board addTitle(Board title) {
-        boards.add(title);
-        return title;
+    public Board addBoard(Board board) {
+        board.setBoardId(boardId++);
+        boards.add(board);
+        return board;
     }
 
     public List<Board> getAllTitle() {

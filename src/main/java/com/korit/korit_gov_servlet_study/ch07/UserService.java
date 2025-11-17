@@ -23,17 +23,17 @@ public class UserService {
     }
 
     // add
-    public User addUser(User user) {
-        return userRepository.addUser(user);
+    public User addUser(SignupReqDto signupReqDto) {
+        return userRepository.addUser(signupReqDto.toEntity()); // 서비스까지는 DTO, 레포지터리에서는 Entity
     }
 
     // 단건 조회
-    public User getUsername(String username) {
+    public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     // 전체 조회
-    public List<User> getAllUsers() {
-        return userRepository.allUsers();
+    public List<User> getUserListAll() {
+        return userRepository.getUserListAll();
     }
 }

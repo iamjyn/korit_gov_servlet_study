@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class Response {
+public class SuccessResponse<T> {
     private String message;
+    private T body;
 }

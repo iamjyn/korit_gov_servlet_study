@@ -9,9 +9,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Board {
-    private Long boardId;
+public class BoardReqDto {
     private String title;
     private String content;
     private String username;
+
+    public Board toEntity() {
+        return Board.builder()
+                .title(title)
+                .content(content)
+                .username(username)
+                .build();
+    }
 }

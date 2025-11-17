@@ -6,7 +6,7 @@ import java.util.List;
 public class UserRepository {
     private static UserRepository instance;
     private List<User> users;
-    private Integer userId = 1;
+    private Long userId = 1L;
 
     private UserRepository() {
         users = new ArrayList<>();
@@ -21,7 +21,8 @@ public class UserRepository {
 
     // username 찾기
     public User findByUsername(String username) {
-        return users.stream().filter(u -> u.getUsername().equals(username))
+        return users.stream()
+                .filter(u -> u.getUsername().equals(username))
                 .findFirst()
                 .orElse(null);
     }
@@ -33,11 +34,8 @@ public class UserRepository {
         return user;
     }
 
-    // users
-    public List<User> allUsers() {
+    // List 반환
+    public List<User> getUserListAll() {
         return users;
     }
-
-
-
 }

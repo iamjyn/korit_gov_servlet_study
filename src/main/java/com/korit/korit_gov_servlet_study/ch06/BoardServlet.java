@@ -25,26 +25,26 @@ public class BoardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Board> boards = boardRepository.getAllTitle();
-        String json = gson.toJson(boards);
+        SuccessResponse<List<Board>> successResponse = SuccessResponse.<List<Board>>builder()
+                .message("전체 조회 완료")
+                .body(boards)
+                .build();
+        String json = gson.toJson(successResponse);
+        resp.setContentType("application/json");
         resp.getWriter().write(json);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Board gsonBoard = gson.fromJson(req.getReader(), Board.class);
+        BoardReqDto boardReqDto = gson.fromJson(req.getReader(), BoardReqDto.class);
+        Board board = boardRepository.addBoard(boardReqDto.toEntity());
 
-        Board foundTitle = boardRepository.findByTitle(gsonBoard.getTitle());
-
-        if (foundTitle != null) {
-            resp.getWriter().write("이미 등록된 title 입니다.");
-            return;
-        }
-
-        Board board = boardRepository.addTitle(gsonBoard);
-        Response response = Response.builder()
+        SuccessResponse<Board> successResponse = SuccessResponse.<Board>builder()
                 .message("게시글 작성 완료")
+                .body(board)
                 .build();
-        String json = gson.toJson(response);
+        String json = gson.toJson(successResponse);
+        resp.setContentType("application/json");
         resp.getWriter().write(json);
     }
 }
