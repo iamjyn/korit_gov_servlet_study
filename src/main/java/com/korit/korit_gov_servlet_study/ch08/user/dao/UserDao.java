@@ -4,6 +4,8 @@ import com.korit.korit_gov_servlet_study.ch08.user.entity.User;
 import com.korit.korit_gov_servlet_study.ch08.user.util.ConnectionFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserDao {
@@ -66,6 +68,46 @@ public class UserDao {
         }
         return null;
     }
+
+    public Optional<List<User>> findByKeyword(String keyword) {
+        String sql = "SELECT * FROM user_tb WHERE username LIKE ?";
+        List<User> userList = new ArrayList<>();
+        try (
+                Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql);
+        ){
+            ps.setString(1, "%" + keyword + "%");
+            try (ResultSet rs = ps.executeQuery()){
+                while (rs.next()) {
+                    userList.add(toUser(rs));
+                }
+            }
+            return Optional.of(userList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public Optional<List<User>> getUserAll() {
+        String sql = "SELECT * FROM user_tb";
+        List<User> userList = new ArrayList<>();
+        try (
+                Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql);
+        ){
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    userList.add(toUser(rs));
+                }
+            }
+            return Optional.of(userList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
 
     public User toUser(ResultSet resultSet) throws SQLException{
         return User.builder()
